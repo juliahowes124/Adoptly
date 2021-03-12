@@ -16,6 +16,7 @@ def connect_db(app):
 
 
 class Pet(db.Model):
+    """ Pet table """
 
     __tablename__ = "pets"
 
@@ -24,8 +25,5 @@ class Pet(db.Model):
     species = db.Column(db.String(50), nullable=False)
     photo_url = db.Column(db.Text, nullable=False, default="")
     age = db.Column(db.Text, nullable=False)
-    #TODO: ADD AGE CONSTRAINT
     notes = db.Column(db.Text)
     available = db.Column(db.Boolean, nullable=False, default=True)
-
-    # CheckConstraint = ()
