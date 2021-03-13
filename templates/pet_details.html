@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}{{pet.name}}{% endblock %}
+{% block content %}
+<div>
+    <h2>{{pet.name}}</h2>
+    <img src="{{pet.photo_url}}" alt="{{pet.name}}">
+    <p>{{pet.age}}</p>
+    <p>{{pet.species}}</p>
+</div>
+
+<h1>Edit Pet Info</h1>
+<form method="POST">
+  {{form.hidden_tag()}}
+  {% for field in form
+          if field.widget.input_type != 'hidden' %}
+   <div>
+     {{field.label}}
+     {{field}}
+   </div>
+    {% for error in field.errors %}
+        {{error}}
+    {% endfor %}
+  {% endfor %}
+<button type="submit">Submit</button>
+</form>
+
+{%for msg in get_flashed_messages()%}
+    <div>{{msg}}</div>
+{% endfor %}
+{% endblock %}

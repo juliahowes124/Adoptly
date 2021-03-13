@@ -8,7 +8,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, connect_db, Pet
 
-from forms import AddPetForm
+from forms import AddPetForm, EditPetForm
 
 from projects_secrets import PETFINDER_API_KEY, PETFINDER_SECRET_KEY
 
@@ -21,14 +21,10 @@ app.config['SECRET_KEY'] = "secret"
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///adopt"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
+app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 connect_db(app)
 db.create_all()
-
-# Having the Debug Toolbar show redirects explicitly is often useful;
-# however, if you want to turn it off, you can uncomment this line:
-#
-# app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 
 toolbar = DebugToolbarExtension(app)
 
@@ -54,12 +50,16 @@ def get_random_pet():
 
 
 @app.route('/')
-def index():
+def show_index():
+    """ Display home page with all pets listed """
+
     pets = Pet.query.all()
     return render_template('pet_list.html', pets=pets)
 
 @app.route('/add', methods=["GET", "POST"])
-def pet_form():
+def show_pet_form():
+    """ Display form for adding new pet and handle form submission """ 
+
     form = AddPetForm()
 
     if form.validate_on_submit():
@@ -74,4 +74,22 @@ def pet_form():
         return redirect("/")
     else:
         return render_template("pet_form.html",form=form)
+
+
+@app.route('/<int:id>', methods=["GET", 'POST'])
+def show_pet_details(id):
+    """ Display pet details and edit form, and handle edit submissions """
+
+    pet = Pet.query.get_or_404(id)
+    form = EditPetForm(obj=pet)
+
+    if form.validate_on_submit():
+        pet.photo_url = form.photo_url.data
+        pet.notes = form.notes.data
+        pet.available = form.available.data
+        db.session.commit()
+        flash(f"Pet {pet.name} updated!")
+        return redirect(f"/{id}")
+    else:
+        return render_template('pet_details.html', form=form, pet=pet)
         
