@@ -20,7 +20,6 @@ def get_random_pet():
                         headers={"Authorization": f"Bearer {token}"})
 
     random_pet = choice(resp.json()["animals"])
-    print(random_pet)
     pet_to_return = {
         "name": random_pet["name"],
         "age": random_pet["age"],

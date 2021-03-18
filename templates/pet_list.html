@@ -2,16 +2,12 @@
 
 {% block title %}Pets{% endblock %}
 {% block content %}
-{%for msg in get_flashed_messages()%}
-    <div>{{msg}}</div>
-{% endfor %}
 <h1>Our Pets</h1>
 {% for pet in pets %}
 <div>
     <img src="{{pet.photo_url}}" alt="{{pet.name}}">
-    <p><a href="/{{pet.id}}">{{pet.name}}</a>
-        <b>{% if pet.available %}is available{% endif %}</b>
-        <b>{% if not pet.available %}is not available{% endif %}</b>
+    <p><a href="/{{pet.id}}">{{pet.name}}</a> is
+        <span class="badge bg-primary text-light">{% if not pet.available %}not {% endif %}available</span>
     </p>
 </div>
 {% endfor %}

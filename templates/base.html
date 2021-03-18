@@ -6,10 +6,15 @@
         <title></title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+        <link
+        href="https://bootswatch.com/4/pulse/bootstrap.css"
+        rel="stylesheet">
         <link rel="stylesheet" href="">
     </head>
     <body>
+        {%for type, msg in get_flashed_messages(with_categories=true) %}
+            <div class="alert alert-{{type}}">{{msg}}</div>
+        {% endfor %}
         <h1>{% block title %} {% endblock %}</h1>
         {% block content %} {% endblock %}
         <script src="" async defer></script>

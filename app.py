@@ -56,7 +56,7 @@ def show_pet_form():
                       notes=form.notes.data)
         db.session.add(new_pet)
         db.session.commit()
-        flash(f"Pet {new_pet.name} added!")
+        flash(f"Pet {new_pet.name} added!", "success")
         return redirect("/")
     else:
         return render_template("pet_form.html",form=form)
@@ -74,7 +74,7 @@ def show_pet_details(id):
         pet.notes = form.notes.data
         pet.available = form.available.data
         db.session.commit()
-        flash(f"Pet {pet.name} updated!")
+        flash(f"Pet {pet.name} updated!", "success")
         return redirect(f"/{id}")
     else:
         return render_template('pet_details.html', form=form, pet=pet)
