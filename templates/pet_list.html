@@ -5,6 +5,7 @@
 {%for msg in get_flashed_messages()%}
     <div>{{msg}}</div>
 {% endfor %}
+<h1>Our Pets</h1>
 {% for pet in pets %}
 <div>
     <img src="{{pet.photo_url}}" alt="{{pet.name}}">
@@ -15,5 +16,12 @@
 </div>
 {% endfor %}
 <a href="/add" class="btn btn-primary">Add a Pet</a>
+
+<h1>Petfinder Pet</h1>
+<div>
+    <img src="{{random_pet.photo_url}}" alt="{{random_pet.name}}">
+    <p>{{random_pet.name}}</p>
+    <p>{{random_pet.age}}</p>
+</div>
 
 {% endblock %}

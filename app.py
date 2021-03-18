@@ -2,17 +2,13 @@
 
 from flask import Flask, render_template, redirect, flash
 
-import requests
-
 from flask_debugtoolbar import DebugToolbarExtension
 
 from models import db, connect_db, Pet
 
 from forms import AddPetForm, EditPetForm
 
-from projects_secrets import PETFINDER_API_KEY, PETFINDER_SECRET_KEY
-
-from random import choice
+from petfinder import get_auth_token, get_random_pet
 
 app = Flask(__name__)
 
@@ -27,26 +23,13 @@ connect_db(app)
 db.create_all()
 
 toolbar = DebugToolbarExtension(app)
+auth_token = None
 
 
-def get_auth_token():
-    resp = requests.post("https://api.petfinder.com/v2/oauth2/token",
-                        data={"grant_type": "client_credentials",
-                                "client_id": PETFINDER_API_KEY,
-                                "client_secret": PETFINDER_SECRET_KEY})
-    print(resp)
-    # token = resp.json()["access_token"]
-    return resp.json()
-
-
-def get_random_pet():
-    token = get_auth_token()
-    resp = requests.get("/https://api.petfinder.com/v2/animals?limit=100",
-                        headers={"Authorization": f"Bearer {token}"})
-    print(resp.json())
-    random_pet = choice(resp.json().items)
-    return random_pet
-    
+@app.before_first_request
+def refresh_credentials():
+    global auth_token
+    auth_token = get_auth_token()
 
 
 @app.route('/')
@@ -54,7 +37,10 @@ def show_index():
     """ Display home page with all pets listed """
 
     pets = Pet.query.all()
-    return render_template('pet_list.html', pets=pets)
+    petfinder_pet = get_random_pet()
+
+    return render_template('pet_list.html', pets=pets, random_pet=petfinder_pet)
+
 
 @app.route('/add', methods=["GET", "POST"])
 def show_pet_form():
