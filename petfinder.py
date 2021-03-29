@@ -17,7 +17,7 @@ def get_auth_token():
 def get_random_pet():
     token = get_auth_token()
     resp = requests.get("https://api.petfinder.com/v2/animals?limit=100",
-                        headers={"Authorization": f"Bearer {token}"})
+                    headers={"Authorization": f"Bearer {token}"})
 
     random_pet = choice(resp.json()["animals"])
     pet_to_return = {
@@ -26,3 +26,4 @@ def get_random_pet():
         "photo_url": random_pet["primary_photo_cropped"]
     }
     return pet_to_return
+    
