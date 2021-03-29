@@ -1,12 +1,18 @@
 """Forms for adopt app."""
 from flask_wtf import FlaskForm
-from wtforms.validators import InputRequired, Optional, AnyOf, URL
+from wtforms.validators import InputRequired, Optional, AnyOf, URL, ValidationError
 from wtforms import StringField, SelectField, BooleanField
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 # from flask_uploads import UploadSet, IMAGES
 
 
 # images = UploadSet('images', IMAGES)
+
+def one_photo_check(form, field):
+    if form.photo_url.data and form.photo_file.data:
+        raise ValidationError('Only one photo allowed')
+    if not form.photo_url.data and not form.photo_file.data:
+        raise ValidationError('Only one photo allowed')
 
 
 class AddPetForm(FlaskForm):
@@ -16,11 +22,10 @@ class AddPetForm(FlaskForm):
                        validators=[InputRequired()])
     species = StringField("Pet species",
                           validators=[InputRequired(), AnyOf(["cat", "dog", "porcupine"])])
-    # photo_url = StringField("Pet photo URL link", 
-    #                         validators=[InputRequired(), URL()])
+    photo_url = StringField("Pet photo URL link", 
+                            validators=[one_photo_check])
     photo_file = FileField('Pet Image', validators=[
-        FileRequired(),
-        FileAllowed(['png', 'jpg', 'jpeg'], 'Images only!')
+        FileAllowed(['png', 'jpg', 'jpeg'], 'Images only!'), one_photo_check
     ])
     age = SelectField("Age", choices=[("baby", "Baby"), 
                                       ("young","Young"), 
@@ -33,11 +38,10 @@ class AddPetForm(FlaskForm):
 class EditPetForm(FlaskForm):
     """Form for editing pets"""
 
-    # photo_url = StringField("Pet photo URL link", 
-    #                         validators=[InputRequired(), URL()])
+    photo_url = StringField("Pet photo URL link", 
+                            validators=[one_photo_check])
     photo_file = FileField('Pet Image', validators=[
-        FileRequired(),
-        FileAllowed(['png', 'jpg', 'jpeg'], 'Images only!')
+        FileAllowed(['png', 'jpg', 'jpeg'], 'Images only!'), one_photo_check
     ])
     notes = StringField("Notes", validators=[Optional()])
     available = BooleanField("Available", default="checked")

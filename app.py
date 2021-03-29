@@ -54,12 +54,13 @@ def show_pet_form():
     
     form = AddPetForm(CombinedMultiDict((request.files, request.form)))
     if form.validate_on_submit():
-        f = form.photo_file.data
-        filename = secure_filename(f.filename)
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         new_pet = Pet()
         form.populate_obj(new_pet)
-        new_pet.photo_file = filename
+        if form.photo_file:
+            f = form.photo_file.data
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            new_pet.photo_file = filename
         db.session.add(new_pet)
         db.session.commit()
         flash(f"Pet {new_pet.name} added!", "success")
@@ -76,11 +77,12 @@ def show_pet_details(id):
     form = EditPetForm(CombinedMultiDict((request.files, request.form)))
 
     if form.validate_on_submit():
-        f = form.photo_file.data
-        filename = secure_filename(f.filename)
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         form.populate_obj(pet)
-        pet.photo_file = filename
+        if form.photo_file:
+            f = form.photo_file.data
+            filename = secure_filename(f.filename)
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            pet.photo_file = filename
         db.session.commit()
         flash(f"Pet {pet.name} updated!", "success")
         return redirect(f"/{id}")
