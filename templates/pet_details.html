@@ -4,7 +4,11 @@
 {% block content %}
 <div>
     <h2>{{pet.name}}</h2>
-    <img src="/static/{{pet.photo_url}}" alt="{{pet.name}}" width="200" height="200">
+    {% if pet.photo_file %}
+    <img src="/static/{{pet.photo_file}}" alt="{{pet.name}}" width="200" height="200">
+    {% else %}
+    <img src="{{pet.photo_url}}" alt="{{pet.name}}" width="200" height="200">
+    {% endif %}
     <p>{{pet.age}}</p>
     <p>{{pet.species}}</p>
 </div>

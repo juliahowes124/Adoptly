@@ -5,7 +5,11 @@
 <h1>Our Pets</h1>
 {% for pet in pets %}
 <div>
-    <img src="/static/{{pet.photo_url}}" alt="{{pet.name}}" width="100" height="100">
+    {% if pet.photo_file %}
+    <img src="/static/{{pet.photo_file}}" alt="{{pet.name}}" width="100" height="100">
+    {% else %}
+    <img src="{{pet.photo_url}}" alt="{{pet.name}}" width="100" height="100">
+    {% endif %}
     <p><a href="/{{pet.id}}">{{pet.name}}</a> is
         <span class="badge bg-primary text-light">{% if not pet.available %}not {% endif %}available</span>
     </p>

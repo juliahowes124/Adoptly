@@ -18,7 +18,7 @@ class AddPetForm(FlaskForm):
                           validators=[InputRequired(), AnyOf(["cat", "dog", "porcupine"])])
     # photo_url = StringField("Pet photo URL link", 
     #                         validators=[InputRequired(), URL()])
-    photo_url = FileField('Pet Image', validators=[
+    photo_file = FileField('Pet Image', validators=[
         FileRequired(),
         FileAllowed(['png', 'jpg', 'jpeg'], 'Images only!')
     ])
@@ -35,7 +35,7 @@ class EditPetForm(FlaskForm):
 
     # photo_url = StringField("Pet photo URL link", 
     #                         validators=[InputRequired(), URL()])
-    photo_url = FileField('Pet Image', validators=[
+    photo_file = FileField('Pet Image', validators=[
         FileRequired(),
         FileAllowed(['png', 'jpg', 'jpeg'], 'Images only!')
     ])
