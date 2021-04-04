@@ -9,7 +9,7 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 # images = UploadSet('images', IMAGES)
 
 def one_photo_check(form, field):
-    if form.photo_url.data and form.photo_file.data:
+    if form.photo_url.data and not isinstance(form.photo_file.data, str) and form.photo_file.data:
         raise ValidationError('Only one photo allowed')
 
 

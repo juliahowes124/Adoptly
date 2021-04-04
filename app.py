@@ -1,6 +1,8 @@
 """Flask app for adopt app."""
 import os
 
+import copy
+
 from flask import Flask, render_template, redirect, flash, request
 
 from flask_debugtoolbar import DebugToolbarExtension
@@ -76,15 +78,25 @@ def show_pet_details(id):
     """ Display pet details and edit form, and handle edit submissions """
 
     pet = Pet.query.get_or_404(id)
-    form = EditPetForm(CombinedMultiDict((request.files, request.form)))
+    object_for_form = copy.deepcopy(pet)
+    del object_for_form.photo_url
+    form = EditPetForm(CombinedMultiDict((request.files, request.form)), obj=object_for_form)
 
     if form.validate_on_submit():
+        if form.photo_url.data == '':
+            del form.photo_url
+        if isinstance(form.photo_file.data, str):
+            del form.photo_file
         form.populate_obj(pet)
-        if form.photo_file.data:
+        if form.photo_file and form.photo_file.data:
             f = form.photo_file.data
             filename = secure_filename(f.filename)
-            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             pet.photo_file = filename
+            pet.photo_url = None
+            f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        elif form.photo_url:
+            pet.photo_file = None
+        
         db.session.commit()
         flash(f"Pet {pet.name} updated!", "success")
         return redirect(f"/{id}")
