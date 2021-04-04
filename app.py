@@ -44,7 +44,7 @@ def refresh_credentials():
 def show_index():
     """ Display home page with all pets listed """
 
-    pets = Pet.query.all()
+    pets = Pet.query.order_by(Pet.available.desc()).all()
     petfinder_pet = get_random_pet()
 
     return render_template('pet_list.html', pets=pets, random_pet=petfinder_pet)
