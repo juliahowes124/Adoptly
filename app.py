@@ -101,6 +101,7 @@ def show_pet_details(id):
         flash(f"Pet {pet.name} updated!", "success")
         return redirect(f"/{id}")
     else:
+        form.available.data = object_for_form.available
         return render_template('pet_details.html', form=form, pet=pet)
 
 
