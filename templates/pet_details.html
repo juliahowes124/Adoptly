@@ -3,11 +3,10 @@
 {% block title %}{{pet.name}}{% endblock %}
 {% block content %}
 <div>
-    <h2>{{pet.name}}</h2>
     {% if pet.photo_file %}
-    <img src="/static/{{pet.photo_file}}" alt="{{pet.name}}" width="200" height="200">
+    <img src="/static/{{pet.photo_file}}" alt="{{pet.name}}" width="200" height="200" style="object-fit: cover;">
     {% else %}
-    <img src="{{pet.photo_url}}" alt="{{pet.name}}" width="200" height="200">
+    <img src="{{pet.photo_url}}" alt="{{pet.name}}" width="200" height="200" style="object-fit: cover;">
     {% endif %}
     <p>{{pet.age}}</p>
     <p>{{pet.species}}</p>

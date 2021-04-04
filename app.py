@@ -56,11 +56,13 @@ def show_pet_form():
     if form.validate_on_submit():
         new_pet = Pet()
         form.populate_obj(new_pet)
-        if form.photo_file:
+        if form.photo_file.data:
             f = form.photo_file.data
             filename = secure_filename(f.filename)
             f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             new_pet.photo_file = filename
+        if new_pet.photo_url == '':
+            new_pet.photo_url = None
         db.session.add(new_pet)
         db.session.commit()
         flash(f"Pet {new_pet.name} added!", "success")
@@ -78,7 +80,7 @@ def show_pet_details(id):
 
     if form.validate_on_submit():
         form.populate_obj(pet)
-        if form.photo_file:
+        if form.photo_file.data:
             f = form.photo_file.data
             filename = secure_filename(f.filename)
             f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))

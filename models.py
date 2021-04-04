@@ -23,7 +23,7 @@ class Pet(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), nullable=False)
     species = db.Column(db.String(50), nullable=False)
-    photo_url = db.Column(db.Text)
+    photo_url = db.Column(db.Text, default="https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png")
     photo_file = db.Column(db.Text)
     age = db.Column(db.Text, nullable=False)
     notes = db.Column(db.Text)

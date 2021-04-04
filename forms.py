@@ -11,8 +11,6 @@ from flask_wtf.file import FileField, FileRequired, FileAllowed
 def one_photo_check(form, field):
     if form.photo_url.data and form.photo_file.data:
         raise ValidationError('Only one photo allowed')
-    if not form.photo_url.data and not form.photo_file.data:
-        raise ValidationError('Only one photo allowed')
 
 
 class AddPetForm(FlaskForm):
@@ -28,7 +26,7 @@ class AddPetForm(FlaskForm):
         FileAllowed(['png', 'jpg', 'jpeg'], 'Images only!'), one_photo_check
     ])
     age = SelectField("Age", choices=[("baby", "Baby"), 
-                                      ("young","Young"), 
+                                      ("young", "Young"), 
                                       ("adult", "Adult"), 
                                       ("senior", "Senior")],
                                 validators=[InputRequired(), AnyOf(["baby", "young", "adult", "senior"])])
@@ -38,6 +36,7 @@ class AddPetForm(FlaskForm):
 class EditPetForm(FlaskForm):
     """Form for editing pets"""
 
+    name = StringField("Pet Name", validators=[InputRequired()])
     photo_url = StringField("Pet photo URL link", 
                             validators=[one_photo_check])
     photo_file = FileField('Pet Image', validators=[
