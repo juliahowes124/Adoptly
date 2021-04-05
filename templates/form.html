@@ -2,13 +2,13 @@
     {{form.hidden_tag()}}
     {% for field in form
             if field.widget.input_type != 'hidden' %}
-     <div>
+     <div class="mt-3 d-flex justify-content-between">
        {{field.label}}
        {{field}}
      </div>
       {% for error in field.errors %}
-          {{error}}
+          <span style="color: red">{{error}}</span>
       {% endfor %}
     {% endfor %}
-  <button class="btn btn-primary" type="submit">Submit</button>
+  <button class="btn btn-primary float-right mt-4" type="submit">Submit</button>
 </form>

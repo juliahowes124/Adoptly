@@ -45,9 +45,14 @@ def show_index():
     """ Display home page with all pets listed """
 
     pets = Pet.query.order_by(Pet.available.desc()).all()
-    petfinder_pet = get_random_pet()
 
-    return render_template('pet_list.html', pets=pets, random_pet=petfinder_pet)
+    return render_template('pet_list.html', pets=pets)
+
+
+@app.route('/petfinder')
+def show_petfinder():
+    petfinder_pet = get_random_pet()
+    return render_template('petfinder_list.html', pet=petfinder_pet)
 
 
 @app.route('/add', methods=["GET", "POST"])

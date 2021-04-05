@@ -1,17 +1,29 @@
+{% from "macros.html" import pet_image, badge %}
 {% extends 'base.html' %}
 
 {% block title %}{{pet.name}}{% endblock %}
 {% block content %}
-<div>
-    {% if pet.photo_file %}
-    <img src="/static/{{pet.photo_file}}" alt="{{pet.name}}" width="200" height="200" style="object-fit: cover;">
-    {% else %}
-    <img src="{{pet.photo_url}}" alt="{{pet.name}}" width="200" height="200" style="object-fit: cover;">
-    {% endif %}
-    <p>{{pet.age}}</p>
-    <p>{{pet.species}}</p>
+<h1 class="text-center">Edit Pet Info</h1>
+<div class="row">
+    <div class="col">
+        {% if pet.photo_file %}
+        {{ pet_image("/static/" + pet.photo_file, pet.name) }}
+        {% else %}
+        {{ pet_image(pet.photo_url, pet.name) }}
+        {% endif %}
+        <br>
+        <h5>
+            {% if pet.available %}
+                {{ badge("available", "primary")}}
+            {% else %}
+                {{ badge("not available", "secondary")}}
+            {% endif %}
+            {{ badge(pet.age, "info")}}
+            {{ badge(pet.species, "success")}}
+        </h5>
+    </div>
+    <div class="col">
+        {% include 'form.html' %}
+    </div>
 </div>
-
-<h1>Edit Pet Info</h1>
-{% include 'form.html' %}
 {% endblock %}

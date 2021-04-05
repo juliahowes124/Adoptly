@@ -1,0 +1,7 @@
+{% macro pet_image(src, alt) %}
+<img src="{{src}}" alt="{{alt}}" width="200" height="200" style="object-fit: cover; border-radius: 50%;">
+{% endmacro %}
+
+{% macro badge(text, color) %}
+<span class="badge bg-{{color}} text-light mt-3">{{text}}</span>
+{% endmacro %}

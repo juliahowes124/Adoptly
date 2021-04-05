@@ -15,8 +15,16 @@
         {%for type, msg in get_flashed_messages(with_categories=true) %}
             <div class="alert alert-{{type}}">{{msg}}</div>
         {% endfor %}
-        <h1>{% block title %} {% endblock %}</h1>
-        {% block content %} {% endblock %}
+        <div class="container">
+            <h1 class="d-inline"><a href="/">Adoptly</a></h1>
+            <span><a href="/petfinder">Petfinder Pets</a></span>
+            <hr>
+            <div class="row">
+                <div class="col-8 mx-auto">
+                    {% block content %} {% endblock %}
+                </div>
+            </div>
+        </div>
         <script src="" async defer></script>
     </body>
 </html>
