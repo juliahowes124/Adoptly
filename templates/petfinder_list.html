@@ -5,11 +5,24 @@
 {% block content %}
 <h1 class="text-center">Petfinder Pets</h1>
 {% for pet in pets %}
-<div>
-    {{pet_image(pet.photo_url, pet.name)}}
-    <div>{{pet.name}}</div>
-    {{badge(pet.age, "info")}}
+
+<div class="row p-4">
+    {% if pet.photo_url %}
+        <div class="col">
+            {{pet_image(pet.photo_url, pet.name)}}
+        </div>
+    {% endif %}
+    <div class="col">
+        <h3>{{pet.name}}</h3>
+        {{ badge(pet.age, "info")}}
+        {{ badge(pet.type, "success")}}
+        {{ badge(pet.gender, "primary")}}
+        <br>
+        {% if pet.description %}<div class="mb-3">{{pet.description}}</div>{% endif %}
+        <a href="{{pet.url}}" target="_blank" class="btn btn-outline-primary">See Profile</a>
+    </div>
 </div>
+<hr>
 {% endfor %}
 
 {% endblock %}

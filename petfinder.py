@@ -14,7 +14,7 @@ def get_auth_token():
 
 def get_petfinder_pets():
     token = get_auth_token()
-    resp = requests.get("https://api.petfinder.com/v2/animals?limit=100",
+    resp = requests.get("https://api.petfinder.com/v2/animals?limit=100&status=adoptable",
                         headers={"Authorization": f"Bearer {token}"})
 
     pets = sample(resp.json()["animals"], 5)
@@ -23,11 +23,15 @@ def get_petfinder_pets():
         if pet["photos"]:
             photo_url = pet["photos"][0]["full"]
         else:
-            photo_url = "https://winaero.com/blog/wp-content/uploads/2015/05/windows-10-user-account-login-icon.png"
+            photo_url = None
         pets_to_return.append({
             "name": pet["name"],
             "age": pet["age"],
-            "photo_url": photo_url
+            "photo_url": photo_url,
+            "description": pet["description"],
+            "url": pet["url"],
+            "gender": pet["gender"],
+            "type": pet["type"]
         })
     return pets_to_return
     
