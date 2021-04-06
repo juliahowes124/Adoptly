@@ -11,7 +11,7 @@ from models import db, connect_db, Pet
 
 from forms import AddPetForm, EditPetForm
 
-from petfinder import get_auth_token, get_random_pet
+from petfinder import get_auth_token, get_petfinder_pets
 
 from werkzeug.utils import secure_filename
 from werkzeug.datastructures import CombinedMultiDict
@@ -51,8 +51,8 @@ def show_index():
 
 @app.route('/petfinder')
 def show_petfinder():
-    petfinder_pet = get_random_pet()
-    return render_template('petfinder_list.html', pet=petfinder_pet)
+    petfinder_pets = get_petfinder_pets()
+    return render_template('petfinder_list.html', pets=petfinder_pets)
 
 
 @app.route('/add', methods=["GET", "POST"])

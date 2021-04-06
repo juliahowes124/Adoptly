@@ -4,10 +4,12 @@
 {% block title %}Pets{% endblock %}
 {% block content %}
 <h1 class="text-center">Petfinder Pets</h1>
+{% for pet in pets %}
 <div>
     {{pet_image(pet.photo_url, pet.name)}}
     <div>{{pet.name}}</div>
     {{badge(pet.age, "info")}}
 </div>
+{% endfor %}
 
 {% endblock %}
