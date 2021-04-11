@@ -28,8 +28,8 @@
         {% endif %}
         {{ badge(pet.age, "info")}}
         {{ badge(pet.species, "success")}}
-        <div class="mb-3">{{pet.notes}}</div>
-        <a href="/{{pet.id}}" class="btn btn-outline-primary">See Profile</a>
+        {% if pet.description %}<div class="my-3">{{pet.notes}}</div>{% endif %}<br>
+        <a href="/{{pet.id}}" class="btn btn-outline-primary my-3">See Profile</a>
     </div>
 </div>
 <hr>
